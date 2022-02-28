@@ -13,7 +13,10 @@ struct ContentView: View {
     
     // Address for main image
     // Starts as a transparent pixel – until an address for an animal's image is set
-    @State var currentImage = URL(string: "https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png")!
+    @State var currentImage = URL(string: "https://aws.random.cat/meow")!
+    
+    @State private var progress = 0.5
+    
     
     // MARK: Computed properties
     var body: some View {
@@ -21,7 +24,63 @@ struct ContentView: View {
         VStack {
             
             // Shows the main image
+            HStack{
+             
+                VStack{
             RemoteImageView(fromURL: currentImage)
+                    
+                    Button(action: {
+                        
+                        progress += 0.05
+    
+                    },
+                           label: {
+                        Text("Dog!")
+                    })
+                        .buttonStyle(.bordered)
+                }
+            
+                
+            Image("VS")
+                    .resizable()
+                    .frame(width: 50, height: 50)
+            
+                
+                VStack{
+            RemoteImageView(fromURL: currentImage)
+                    
+                    Button(action: {
+                        progress -= 0.05
+                    },
+                           label: {
+                        Text("Cat!")
+                    })
+                        .buttonStyle(.bordered)
+                }
+                
+            }
+            .padding()
+            
+
+                ProgressView(value: progress)
+                .padding()
+            
+            HStack{
+                Text("Dog or Cat")
+                    .font(.title)
+                    .bold()
+                    .padding()
+                Spacer()
+            }
+            
+            List{
+                Text("I like cat more")
+                
+                Text("I like dog more")
+            }
+            
+        
+            
             
             // Push main image to top of screen
             Spacer()

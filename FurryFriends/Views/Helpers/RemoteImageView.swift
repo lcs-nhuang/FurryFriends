@@ -20,7 +20,7 @@ struct RemoteImageView: View {
                    content: { downloadedImage in
             downloadedImage
                 .resizable()
-                .scaledToFit()
+                .frame(width: 150.0, height: 150.0)
         },
                    placeholder: {
             ProgressView()
