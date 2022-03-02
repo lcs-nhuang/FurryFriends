@@ -36,6 +36,7 @@ struct ContentView: View {
     @State private var progressCat = 0.0
     
     
+    
     // MARK: Computed properties
     var body: some View {
         
@@ -50,7 +51,7 @@ struct ContentView: View {
                     HStack{
                     Button(action: {
                         
-                        progressDog += 0.125
+                        progressDog += 1.25
                         
                         Task{
                             await loadNewDog()
@@ -67,18 +68,9 @@ struct ContentView: View {
                             .frame(width: 60, height: 50)
                     })
                     
-                        Image(systemName: "star")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                            .foregroundColor(.blue)
-                            .padding(10)
-                            .onTapGesture{
-                                if currentDogAddedToFavorites == false{
-                                    favoritesDog.append(currentDogImage)
-                                    
-                                    currentDogAddedToFavorites = true
-                                }}
-                           
+                        
+                     FavoriteButtonView()
+                            
                     }
                 }
                 
@@ -93,7 +85,7 @@ struct ContentView: View {
                     
                     HStack{
                     Button(action: {
-                        progressCat += 0.125
+                        progressCat += 1.25
                         
                         Task{
                             await loadNewCat()
@@ -110,17 +102,28 @@ struct ContentView: View {
                             .frame(width: 60, height: 50)
                     })
                     
+                        ZStack{
                         Image(systemName: "star")
                             .resizable()
                             .frame(width: 25, height: 25)
                             .foregroundColor(.blue)
                             .padding(10)
+                            .opacity(currentCatAddedToFavorites == true ? 0.0 : 1.0)
                             .onTapGesture{
                                 if currentCatAddedToFavorites == false{
                                     favoritesCat.append(currentCatImage)
                                     
                                     currentCatAddedToFavorites = true
                                 }}
+                            
+                            Image(systemName: "star.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .foregroundColor(.blue)
+                                .padding(10)
+                                .opacity(currentCatAddedToFavorites == true ? 1.0 : 0.0)
+                            
+                        }
                     }
                     
                     
@@ -130,11 +133,11 @@ struct ContentView: View {
             .padding()
             
             HStack{
-            ProgressView(value: progressDog)
+            ProgressView(value: progressDog,total: 10)
                     .tint(.brown)
                 .padding()
             
-            ProgressView(value: progressCat)
+            ProgressView(value: progressCat,total: 10)
                 .tint(.orange)
                 .padding()
             }
@@ -149,7 +152,7 @@ struct ContentView: View {
             
             
             List(favoritesDog, id: \.self) { currentFavoriteDog in
-                RemoteImageView(fromURL: currentLeftImage)
+                RemoteImageView(fromURL: URL(string: currentFavoriteDog.message)!)
             }
             
             
@@ -163,8 +166,8 @@ struct ContentView: View {
         .task {
             
             // Example images for each type of pet
-            let remoteCatImage = "https://purr.objects-us-east-1.dream.io/i/JJiYI.jpg"
-            let remoteDogImage = "https://images.dog.ceo/breeds/labrador/lab_young.JPG"
+            //let remoteCatImage = "https://purr.objects-us-east-1.dream.io/i/JJiYI.jpg"
+            //let remoteDogImage = "https://images.dog.ceo/breeds/labrador/lab_young.JPG"
             
             await loadNewDog()
             
