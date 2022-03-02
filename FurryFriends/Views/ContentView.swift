@@ -47,12 +47,17 @@ struct ContentView: View {
                 VStack{
                     RemoteImageView(fromURL: currentLeftImage)
                     
+                    HStack{
                     Button(action: {
                         
                         progressDog += 0.125
                         
                         Task{
                             await loadNewDog()
+                        }
+                        
+                        Task{
+                            await loadNewCat()
                         }
                         
                     },
@@ -62,29 +67,62 @@ struct ContentView: View {
                             .frame(width: 60, height: 50)
                     })
                     
+                        Image(systemName: "star")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .foregroundColor(.blue)
+                            .padding(10)
+                            .onTapGesture{
+                                if currentDogAddedToFavorites == false{
+                                    favoritesDog.append(currentDogImage)
+                                    
+                                    currentDogAddedToFavorites = true
+                                }}
+                           
+                    }
                 }
                 
                 
-                Image("VS")
-                    .resizable()
-                    .frame(width: 50, height: 50)
+                Text("VS")
+                    .bold()
                 
                 
                 VStack{
                     RemoteImageView(fromURL: currentRightImage)
                     
+                    
+                    HStack{
                     Button(action: {
                         progressCat += 0.125
                         
                         Task{
                             await loadNewCat()
                         }
+                        
+                        Task{
+                            await loadNewDog()
+                        }
+                        
                     },
                            label: {
                         Image("CatBotton")
                             .resizable()
                             .frame(width: 60, height: 50)
                     })
+                    
+                        Image(systemName: "star")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .foregroundColor(.blue)
+                            .padding(10)
+                            .onTapGesture{
+                                if currentCatAddedToFavorites == false{
+                                    favoritesCat.append(currentCatImage)
+                                    
+                                    currentCatAddedToFavorites = true
+                                }}
+                    }
+                    
                     
                 }
                 
@@ -110,10 +148,8 @@ struct ContentView: View {
             }
             
             
-            List{
-                Text("I like cat more")
-                
-                Text("I like dog more")
+            List(favoritesDog, id: \.self) { currentFavoriteDog in
+                RemoteImageView(fromURL: currentLeftImage)
             }
             
             
