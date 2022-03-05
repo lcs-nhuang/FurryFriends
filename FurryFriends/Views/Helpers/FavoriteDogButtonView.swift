@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-struct FavoriteButtonView: View {
+struct FavoriteDogButtonView: View {
     
-    @State var currentDogAddedToFavorites: Bool = false
+    @Binding var currentDogAddedToFavorites: Bool
     
-    @State var favoritesDog: [DogImage] = []
+    @Binding var favoritesDog: [DogImage]
     
-    @State var currentDogImage: DogImage = DogImage(message: "https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png",
-                                                    status: "success")
+    @Binding var currentDogImage: DogImage
+    
+    
     
     var body: some View {
         ZStack{
@@ -41,8 +42,8 @@ struct FavoriteButtonView: View {
     }
 }
 
-struct FavoriteButtonView_Previews: PreviewProvider {
-    static var previews: some View {
-        FavoriteButtonView()
-    }
-}
+//struct FavoriteButtonView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        FavoriteDogButtonView(currentDogAddedToFavorites: .constant(false), favoritesDog: [] , currentDogImage: )
+//    }
+//}

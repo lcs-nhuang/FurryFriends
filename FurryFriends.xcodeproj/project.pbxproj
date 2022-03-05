@@ -15,7 +15,9 @@
 		8134B15627CA575E004DEB85 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8134B15527CA575E004DEB85 /* README.md */; };
 		BB336C4127CDB90A0008356A /* CatImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB336C4027CDB90A0008356A /* CatImage.swift */; };
 		BB336C4327CDB9CB0008356A /* DogImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB336C4227CDB9CB0008356A /* DogImage.swift */; };
-		BB336C4527CFFAE30008356A /* FavoriteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB336C4427CFFAE20008356A /* FavoriteButtonView.swift */; };
+		BB336C4527CFFAE30008356A /* FavoriteDogButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB336C4427CFFAE20008356A /* FavoriteDogButtonView.swift */; };
+		BBE8973927D30DDC001103E5 /* FavoriteCatButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE8973827D30DDB001103E5 /* FavoriteCatButtonView.swift */; };
+		BBF0946527D014000052B13C /* FavoriteAnimalImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF0946427D014000052B13C /* FavoriteAnimalImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,7 +30,9 @@
 		8134B15527CA575E004DEB85 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BB336C4027CDB90A0008356A /* CatImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatImage.swift; sourceTree = "<group>"; };
 		BB336C4227CDB9CB0008356A /* DogImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImage.swift; sourceTree = "<group>"; };
-		BB336C4427CFFAE20008356A /* FavoriteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButtonView.swift; sourceTree = "<group>"; };
+		BB336C4427CFFAE20008356A /* FavoriteDogButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDogButtonView.swift; sourceTree = "<group>"; };
+		BBE8973827D30DDB001103E5 /* FavoriteCatButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCatButtonView.swift; sourceTree = "<group>"; };
+		BBF0946427D014000052B13C /* FavoriteAnimalImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteAnimalImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				8134B14427CA4862004DEB85 /* FurryFriendsApp.swift */,
+				BBF0946627D0140B0052B13C /* Model */,
 				8134B15227CA55BC004DEB85 /* Views */,
 				8134B14827CA4863004DEB85 /* Assets.xcassets */,
 				8134B14A27CA4863004DEB85 /* Preview Content */,
@@ -82,8 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				8134B14627CA4862004DEB85 /* ContentView.swift */,
-				BB336C4027CDB90A0008356A /* CatImage.swift */,
-				BB336C4227CDB9CB0008356A /* DogImage.swift */,
 				8134B15727CA5B63004DEB85 /* Helpers */,
 			);
 			path = Views;
@@ -92,10 +95,21 @@
 		8134B15727CA5B63004DEB85 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BBE8973827D30DDB001103E5 /* FavoriteCatButtonView.swift */,
+				BB336C4427CFFAE20008356A /* FavoriteDogButtonView.swift */,
 				8134B15327CA55F4004DEB85 /* RemoteImageView.swift */,
-				BB336C4427CFFAE20008356A /* FavoriteButtonView.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		BBF0946627D0140B0052B13C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BB336C4027CDB90A0008356A /* CatImage.swift */,
+				BB336C4227CDB9CB0008356A /* DogImage.swift */,
+				BBF0946427D014000052B13C /* FavoriteAnimalImage.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,11 +183,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBF0946527D014000052B13C /* FavoriteAnimalImage.swift in Sources */,
 				BB336C4127CDB90A0008356A /* CatImage.swift in Sources */,
 				BB336C4327CDB9CB0008356A /* DogImage.swift in Sources */,
 				8134B14727CA4862004DEB85 /* ContentView.swift in Sources */,
 				8134B15427CA55F4004DEB85 /* RemoteImageView.swift in Sources */,
-				BB336C4527CFFAE30008356A /* FavoriteButtonView.swift in Sources */,
+				BBE8973927D30DDC001103E5 /* FavoriteCatButtonView.swift in Sources */,
+				BB336C4527CFFAE30008356A /* FavoriteDogButtonView.swift in Sources */,
 				8134B14527CA4862004DEB85 /* FurryFriendsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

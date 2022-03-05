@@ -22,9 +22,11 @@ struct ContentView: View {
     
     @State var currentCatImage: CatImage = CatImage(file: "https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png")
     
+    
     @State var favoritesCat: [CatImage] = []
     
     @State var favoritesDog: [DogImage] = []
+    
     
     @State var currentCatAddedToFavorites: Bool = false
     
@@ -34,6 +36,7 @@ struct ContentView: View {
     @State private var progressDog = 0.0
     
     @State private var progressCat = 0.0
+    
     
     
     
@@ -69,7 +72,7 @@ struct ContentView: View {
                     })
                     
                         
-                     FavoriteButtonView()
+                     FavoriteDogButtonView(currentDogAddedToFavorites: $currentDogAddedToFavorites, favoritesDog: $favoritesDog, currentDogImage: $currentDogImage)
                             
                     }
                 }
@@ -102,28 +105,7 @@ struct ContentView: View {
                             .frame(width: 60, height: 50)
                     })
                     
-                        ZStack{
-                        Image(systemName: "star")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                            .foregroundColor(.blue)
-                            .padding(10)
-                            .opacity(currentCatAddedToFavorites == true ? 0.0 : 1.0)
-                            .onTapGesture{
-                                if currentCatAddedToFavorites == false{
-                                    favoritesCat.append(currentCatImage)
-                                    
-                                    currentCatAddedToFavorites = true
-                                }}
-                            
-                            Image(systemName: "star.fill")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                                .foregroundColor(.blue)
-                                .padding(10)
-                                .opacity(currentCatAddedToFavorites == true ? 1.0 : 0.0)
-                            
-                        }
+                        FavoriteCatButtonView(currentCatAddedToFavorites: $currentCatAddedToFavorites, favoritesCat: $favoritesCat, currentCatImage: $currentCatImage)
                     }
                     
                     
@@ -143,7 +125,7 @@ struct ContentView: View {
             }
             
             HStack{
-                Text("Dog or Cat")
+                Text("Favorites")
                     .font(.title)
                     .bold()
                     .padding()
@@ -154,6 +136,11 @@ struct ContentView: View {
             List(favoritesDog, id: \.self) { currentFavoriteDog in
                 RemoteImageView(fromURL: URL(string: currentFavoriteDog.message)!)
             }
+            
+            List(favoritesCat, id: \.self) { currentFavoriteCat in
+                RemoteImageView(fromURL: URL(string: currentFavoriteCat.file)!)
+            }
+            
             
             
             
