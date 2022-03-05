@@ -17,15 +17,22 @@ struct ContentView: View {
     
     @State var currentRightImage = URL(string: "https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png")!
     
+    
+    
     @State var currentDogImage: DogImage = DogImage(message: "https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png",
                                                     status: "success")
     
     @State var currentCatImage: CatImage = CatImage(file: "https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png")
     
+    @State var currentAnimalImage: FavoriteAnimalImage = FavoriteAnimalImage(imageLink:"https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png")
+    
+    
     
     @State var favoritesCat: [CatImage] = []
     
     @State var favoritesDog: [DogImage] = []
+    
+    @State var favoriteAnimal: [FavoriteAnimalImage] = []
     
     
     @State var currentCatAddedToFavorites: Bool = false
@@ -33,9 +40,11 @@ struct ContentView: View {
     @State var currentDogAddedToFavorites: Bool = false
     
     
+    
     @State private var progressDog = 0.0
     
     @State private var progressCat = 0.0
+    
     
     
     
@@ -102,7 +111,7 @@ struct ContentView: View {
                            label: {
                         Image("CatBotton")
                             .resizable()
-                            .frame(width: 60, height: 50)
+                            .frame(width: 54, height: 45)
                     })
                     
                         FavoriteCatButtonView(currentCatAddedToFavorites: $currentCatAddedToFavorites, favoritesCat: $favoritesCat, currentCatImage: $currentCatImage)
@@ -132,8 +141,23 @@ struct ContentView: View {
                 Spacer()
             }
             
+            HStack{
+            Text("Dog")
+                    .bold()
+                    
+                Spacer()
+                    .frame(width: 200)
+                
+            Text("Cat")
+                    .bold()
+                    
+
+            }
             
-            List(favoritesDog, id: \.self) { currentFavoriteDog in
+            HStack{
+            List(favoritesDog, id: \.self) {
+                
+                currentFavoriteDog in
                 RemoteImageView(fromURL: URL(string: currentFavoriteDog.message)!)
             }
             
@@ -141,7 +165,7 @@ struct ContentView: View {
                 RemoteImageView(fromURL: URL(string: currentFavoriteCat.file)!)
             }
             
-            
+            }
             
             
             
