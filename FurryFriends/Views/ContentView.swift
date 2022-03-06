@@ -11,6 +11,8 @@ struct ContentView: View {
     
     // MARK: Stored properties
     
+    @Environment(\.scenePhase) var scenePhase
+    
     // Address for main image
     // Starts as a transparent pixel – until an address for an animal's image is set
     @State var currentLeftImage = URL(string: "https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png")!
@@ -53,10 +55,10 @@ struct ContentView: View {
             
             VStack {
                 
-                // Shows the main image
                 HStack{
                     
                     VStack{
+                        // Shows the main image
                         RemoteImageView(fromURL: currentLeftImage)
                         
                         HStack{
@@ -173,31 +175,48 @@ struct ContentView: View {
                 Spacer()
                 
             }
-            // Runs once when the app is opened
-            .task {
-                
-                // Example images for each type of pet
-                //let remoteCatImage = "https://purr.objects-us-east-1.dream.io/i/JJiYI.jpg"
-                //let remoteDogImage = "https://images.dog.ceo/breeds/labrador/lab_young.JPG"
-                
-                await loadNewDog()
-                
-                await loadNewCat()
-                
-                // Replaces the transparent pixel image with an actual image of an animal
-                // Adjust according to your preference ☺️
-                currentLeftImage = URL(string: currentDogImage.message)!
-                
-                currentRightImage = URL(string: currentCatImage.file)!
-                
-            }
-            .navigationTitle("Furry Friends")
             
             LottieView(animationNamed: "69484-relax")
                 .opacity(progressDog == 10 ? 1.0 : 0.0 )
             
             LottieView(animationNamed: "48205-cats-in-a-box")
                 .opacity(progressCat == 10 ? 1.0 : 0.0)
+            
+            
+            
+                .onChange(of: scenePhase) { newPhase in
+                    
+                    if newPhase == .inactive {
+                        print("Inactive")
+                    } else if newPhase == .active {
+                        print("Active")
+                    } else if newPhase == .background {
+                        print("Background")
+                        
+                        persistFavoritesDog()
+                        
+                        persistFavoritesCat()
+                    }
+                    
+                }
+            
+            
+            
+            // Runs once when the app is opened
+                .task {
+                    
+                    await loadNewDog()
+                    
+                    await loadNewCat()
+                    
+                    
+                    currentLeftImage = URL(string: currentDogImage.message)!
+                    
+                    currentRightImage = URL(string: currentCatImage.file)!
+                    
+                }
+                .navigationTitle("Furry Friends")
+            
         }
         
     }
@@ -235,7 +254,6 @@ struct ContentView: View {
     }
     
     
-    
     func loadNewCat() async{
         let url = URL(string: "https://aws.random.cat/meow")!
         
@@ -262,6 +280,132 @@ struct ContentView: View {
             print(error)
         }
         
+    }
+    
+    
+    func persistFavoritesDog() {
+        
+        // Get a location under which to save the data
+        let filename = getDocumentsDirectory().appendingPathComponent(savedFavoritesLable)
+        print(filename)
+        
+        do {
+            //Create a JSON Encoder object
+            let encoder = JSONEncoder()
+            
+            //Configured the encoder to "Pretty print" the JSON
+            encoder.outputFormatting = .prettyPrinted
+            
+            //Encode the list of favorite dog we've collect
+            let data = try encoder.encode(favoritesDog)
+            
+            //Write the JSON to a file in the filename location we came up with earlier
+            try data.write(to: filename, options: [.atomicWrite, .completeFileProtection])
+            
+            //See the data that was written
+            print("Saved data to the Documents directy succeddfully")
+            print("========")
+            print(String(data: data, encoding: .utf8)!)
+            
+        } catch {
+            print("Unable to write list of favorite to the Documents directoty")
+            print("=========")
+            print(error.localizedDescription)
+        }
+        
+    }
+    
+    
+    func persistFavoritesCat() {
+        
+        // Get a location under which to save the data
+        let filename = getDocumentsDirectory().appendingPathComponent(savedFavoritesLable)
+        print(filename)
+        
+        do {
+            //Create a JSON Encoder object
+            let encoder = JSONEncoder()
+            
+            //Configured the encoder to "Pretty print" the JSON
+            encoder.outputFormatting = .prettyPrinted
+            
+            //Encode the list of favorite cat we've collect
+            let data = try encoder.encode(favoritesCat)
+            
+            //Write the JSON to a file in the filename location we came up with earlier
+            try data.write(to: filename, options: [.atomicWrite, .completeFileProtection])
+            
+            //See the data that was written
+            print("Saved data to the Documents directy succeddfully")
+            print("========")
+            print(String(data: data, encoding: .utf8)!)
+            
+        } catch {
+            print("Unable to write list of favorite to the Documents directoty")
+            print("=========")
+            print(error.localizedDescription)
+        }
+        
+    }
+    
+    
+    func loadFavouritesDog() {
+        
+        let filename = getDocumentsDirectory().appendingPathComponent(savedFavoritesLable)
+        print(filename)
+        
+        //Attempt to load the data
+        do {
+            
+            // Load the raw data
+            let data = try Data(contentsOf: filename)
+            
+            //See the data that was read
+            print("Saved data to the Documents directy succeddfully")
+            print("========")
+            print(String(data: data, encoding: .utf8)!)
+            
+            //Decode the JSON into Swift native data structures
+            favoritesDog = try JSONDecoder().decode([DogImage].self, from: data)
+            
+            
+            
+        } catch  {
+            //What went wrong?
+            print("Could not load the data from the stored JSON file")
+            print("========")
+            print(error.localizedDescription )
+        }
+    }
+    
+    
+    func loadFavouritesCat() {
+        
+        let filename = getDocumentsDirectory().appendingPathComponent(savedFavoritesLable)
+        print(filename)
+        
+        //Attempt to load the data
+        do {
+            
+            // Load the raw data
+            let data = try Data(contentsOf: filename)
+            
+            //See the data that was read
+            print("Saved data to the Documents directy succeddfully")
+            print("========")
+            print(String(data: data, encoding: .utf8)!)
+            
+            //Decode the JSON into Swift native data structures
+            favoritesCat = try JSONDecoder().decode([CatImage].self, from: data)
+            
+            
+            
+        } catch  {
+            //What went wrong?
+            print("Could not load the data from the stored JSON file")
+            print("========")
+            print(error.localizedDescription )
+        }
     }
     
 }
