@@ -24,15 +24,12 @@ struct ContentView: View {
     
     @State var currentCatImage: CatImage = CatImage(file: "https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png")
     
-    @State var currentAnimalImage: FavoriteAnimalImage = FavoriteAnimalImage(imageLink:"https://www.russellgordon.ca/lcs/miscellaneous/transparent-pixel.png")
-    
     
     
     @State var favoritesCat: [CatImage] = []
     
     @State var favoritesDog: [DogImage] = []
     
-    @State var favoriteAnimal: [FavoriteAnimalImage] = []
     
     
     @State var currentCatAddedToFavorites: Bool = false
@@ -48,150 +45,160 @@ struct ContentView: View {
     
     
     
-    
     // MARK: Computed properties
     var body: some View {
         
-        VStack {
+        ZStack{
             
-            // Shows the main image
-            HStack{
+            
+            VStack {
                 
-                VStack{
-                    RemoteImageView(fromURL: currentLeftImage)
+                // Shows the main image
+                HStack{
                     
-                    HStack{
-                    Button(action: {
+                    VStack{
+                        RemoteImageView(fromURL: currentLeftImage)
                         
-                        progressDog += 1.25
-                        
-                        Task{
-                            await loadNewDog()
-                        }
-                        
-                        Task{
-                            await loadNewCat()
-                        }
-                        
-                    },
-                           label: {
-                        Image("DogBotton")
-                            .resizable()
-                            .frame(width: 60, height: 50)
-                    })
-                    
-                        
-                     FavoriteDogButtonView(currentDogAddedToFavorites: $currentDogAddedToFavorites, favoritesDog: $favoritesDog, currentDogImage: $currentDogImage)
+                        HStack{
+                            Button(action: {
+                                
+                                progressDog += 1.25
+                                
+                                Task{
+                                    await loadNewDog()
+                                }
+                                
+                                Task{
+                                    await loadNewCat()
+                                }
+                                
+                            },
+                                   label: {
+                                Image("DogBotton")
+                                    .resizable()
+                                    .frame(width: 60, height: 50)
+                            })
                             
-                    }
-                }
-                
-                
-                Text("VS")
-                    .bold()
-                
-                
-                VStack{
-                    RemoteImageView(fromURL: currentRightImage)
-                    
-                    
-                    HStack{
-                    Button(action: {
-                        progressCat += 1.25
-                        
-                        Task{
-                            await loadNewCat()
+                            
+                            FavoriteDogButtonView(currentDogAddedToFavorites: $currentDogAddedToFavorites, favoritesDog: $favoritesDog, currentDogImage: $currentDogImage)
+                            
                         }
-                        
-                        Task{
-                            await loadNewDog()
-                        }
-                        
-                    },
-                           label: {
-                        Image("CatBotton")
-                            .resizable()
-                            .frame(width: 54, height: 45)
-                    })
-                    
-                        FavoriteCatButtonView(currentCatAddedToFavorites: $currentCatAddedToFavorites, favoritesCat: $favoritesCat, currentCatImage: $currentCatImage)
                     }
                     
                     
+                    Text("VS")
+                        .bold()
+                    
+                    
+                    VStack{
+                        RemoteImageView(fromURL: currentRightImage)
+                        
+                        
+                        HStack{
+                            Button(action: {
+                                progressCat += 1.25
+                                
+                                Task{
+                                    await loadNewCat()
+                                }
+                                
+                                Task{
+                                    await loadNewDog()
+                                }
+                                
+                            },
+                                   label: {
+                                Image("CatBotton")
+                                    .resizable()
+                                    .frame(width: 54, height: 45)
+                            })
+                            
+                            FavoriteCatButtonView(currentCatAddedToFavorites: $currentCatAddedToFavorites, favoritesCat: $favoritesCat, currentCatImage: $currentCatImage)
+                        }
+                        
+                        
+                    }
+                    
+                }
+                .padding()
+                
+                HStack{
+                    ProgressView(value: progressDog,total: 10)
+                        .tint(.brown)
+                        .padding()
+                    
+                    ProgressView(value: progressCat,total: 10)
+                        .tint(.orange)
+                        .padding()
                 }
                 
-            }
-            .padding()
-            
-            HStack{
-            ProgressView(value: progressDog,total: 10)
-                    .tint(.brown)
-                .padding()
-            
-            ProgressView(value: progressCat,total: 10)
-                .tint(.orange)
-                .padding()
-            }
-            
-            HStack{
-                Text("Favorites")
-                    .font(.title)
-                    .bold()
-                    .padding()
-                Spacer()
-            }
-            
-            HStack{
-            Text("Dog")
-                    .bold()
-                    
-                Spacer()
-                    .frame(width: 200)
+                HStack{
+                    Text("Favorites")
+                        .font(.title)
+                        .bold()
+                        .padding()
+                    Spacer()
+                }
                 
-            Text("Cat")
-                    .bold()
+                HStack{
+                    Text("Dog")
+                        .bold()
                     
-
-            }
-            
-            HStack{
-            List(favoritesDog, id: \.self) {
+                    Spacer()
+                        .frame(width: 200)
+                    
+                    Text("Cat")
+                        .bold()
+                    
+                    
+                }
                 
-                currentFavoriteDog in
-                RemoteImageView(fromURL: URL(string: currentFavoriteDog.message)!)
+                HStack{
+                    List(favoritesDog, id: \.self) {
+                        
+                        currentFavoriteDog in
+                        RemoteImageView(fromURL: URL(string: currentFavoriteDog.message)!)
+                    }
+                    
+                    List(favoritesCat, id: \.self) { currentFavoriteCat in
+                        RemoteImageView(fromURL: URL(string: currentFavoriteCat.file)!)
+                    }
+                    
+                }
+                
+                
+                
+                
+                // Push main image to top of screen
+                Spacer()
+                
             }
-            
-            List(favoritesCat, id: \.self) { currentFavoriteCat in
-                RemoteImageView(fromURL: URL(string: currentFavoriteCat.file)!)
+            // Runs once when the app is opened
+            .task {
+                
+                // Example images for each type of pet
+                //let remoteCatImage = "https://purr.objects-us-east-1.dream.io/i/JJiYI.jpg"
+                //let remoteDogImage = "https://images.dog.ceo/breeds/labrador/lab_young.JPG"
+                
+                await loadNewDog()
+                
+                await loadNewCat()
+                
+                // Replaces the transparent pixel image with an actual image of an animal
+                // Adjust according to your preference ☺️
+                currentLeftImage = URL(string: currentDogImage.message)!
+                
+                currentRightImage = URL(string: currentCatImage.file)!
+                
             }
+            .navigationTitle("Furry Friends")
             
-            }
+            LottieView(animationNamed: "69484-relax")
+                .opacity(progressDog == 10 ? 1.0 : 0.0 )
             
-            
-            
-            // Push main image to top of screen
-            Spacer()
-            
+            LottieView(animationNamed: "48205-cats-in-a-box")
+                .opacity(progressCat == 10 ? 1.0 : 0.0)
         }
-        // Runs once when the app is opened
-        .task {
-            
-            // Example images for each type of pet
-            //let remoteCatImage = "https://purr.objects-us-east-1.dream.io/i/JJiYI.jpg"
-            //let remoteDogImage = "https://images.dog.ceo/breeds/labrador/lab_young.JPG"
-            
-            await loadNewDog()
-            
-            await loadNewCat()
-            
-            // Replaces the transparent pixel image with an actual image of an animal
-            // Adjust according to your preference ☺️
-            currentLeftImage = URL(string: currentDogImage.message)!
-            
-            currentRightImage = URL(string: currentCatImage.file)!
-            
-        }
-        .navigationTitle("Furry Friends")
         
     }
     
