@@ -176,6 +176,8 @@ struct ContentView: View {
                 
             }
             
+           
+                
             LottieView(animationNamed: "69484-relax")
                 .opacity(progressDog == 10 ? 1.0 : 0.0 )
             
@@ -183,6 +185,22 @@ struct ContentView: View {
                 .opacity(progressCat == 10 ? 1.0 : 0.0)
             
             
+            Button(action: {
+                progressDog = 0
+                
+                progressCat = 0
+            }, label: {
+                Text("Again!")
+            })
+                .font(.largeTitle)
+                .padding(.top, 300)
+                .opacity(progressDog == 10 || progressCat == 10 ? 1.0 : 0.0)
+                .buttonStyle(.borderedProminent)
+                .foregroundColor(.white)
+                
+                
+               
+
             
                 .onChange(of: scenePhase) { newPhase in
                     
